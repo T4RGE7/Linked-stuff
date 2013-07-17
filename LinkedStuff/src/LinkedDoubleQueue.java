@@ -19,7 +19,7 @@ public class LinkedDoubleQueue<T> {
 	public LinkedDoubleQueue(T data) {
 		this.head = new LinkedDoubleNode<T>(data);
 		this.current = null;
-		this.tail = null;
+		this.tail = this.head;
 		this.size = 1;
 	}
 	
@@ -44,6 +44,7 @@ public class LinkedDoubleQueue<T> {
 		if(this.isEmpty()) {
 			throw new NullPointerException();
 		}
+		this.size--;
 		if(this.size == 1) {
 			T toReturn = this.tail.getData();
 			this.head = null;

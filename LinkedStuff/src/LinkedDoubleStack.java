@@ -19,7 +19,7 @@ public class LinkedDoubleStack<T> {
 	public LinkedDoubleStack(T data) {
 		this.head = new LinkedDoubleNode<T>(data);
 		this.current = null;
-		this.tail = null;
+		this.tail = this.head;
 		this.size = 1;
 	}
 	
