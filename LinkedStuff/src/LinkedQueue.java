@@ -97,9 +97,9 @@ public class LinkedQueue<T> {
 		if(this.isEmpty()) {
 			return 0;
 		}
-		LinkedNode<T> current = this.head;
+		/*LinkedNode<T>*/ this.current = this.head;
 		int toReturn = 1;
-		for(; current.getFrontPointer() != null; toReturn++, current = current.getFrontPointer());
+		for(; this.current.getFrontPointer() != null; toReturn++, this.current = this.current.getFrontPointer());
 		return toReturn;
 	}
 	

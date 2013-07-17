@@ -57,24 +57,13 @@ public class LinkedStack<T>{
 			this.push(data);
 			return;
 		}
-//		if(location == this.size()) {
-//////			this.current = this.head;
-//////			while(this.current.getFrontPointer() != null) {
-//////				this.current = current.getFrontPointer();
-//////			}
-//////			this.current.setFrontPointer(new LinkedNode<T>(data));
-////			this.moveCurrent(location - 1);
-////			this.current.setFrontPointer(new LinkedNode<T>(data));
-////			return;
-//		}
+
 		if(location > this.size()) {
 			throw new IndexOutOfBoundsException();
 		}
 		LinkedNode<T> toInsert = new LinkedNode<T>(data);
 		moveCurrent(location - 1);
-//		if (current.getFrontPointer() == null) {
-//			System.out.println("FLAG");
-//		}
+
 		toInsert.setFrontPointer(this.current.getFrontPointer());
 		this.current.setFrontPointer(toInsert);
 	}
@@ -83,7 +72,7 @@ public class LinkedStack<T>{
 		if(location > this.size() || location < 0) {
 			throw new IndexOutOfBoundsException();
 		}
-	//	LinkedNode<T> current = this.head;
+
 		this.moveCurrent(location);
 		this.current.setData(data);
 	}
@@ -101,9 +90,9 @@ public class LinkedStack<T>{
 		if(this.isEmpty()) {
 			return 0;
 		}
-		LinkedNode<T> current = this.head;
+		/*LinkedNode<T>*/ this.current = this.head;
 		int toReturn = 1;
-		for(; current.getFrontPointer() != null; toReturn++, current = current.getFrontPointer());
+		for(; this.current.getFrontPointer() != null; toReturn++, this.current = this.current.getFrontPointer());
 		return toReturn;
 	}
 	
