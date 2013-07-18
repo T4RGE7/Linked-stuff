@@ -1,10 +1,10 @@
 
 public class TestDriver {
 	public static void main(String[] args) {
-		LinkedDoubleStack<String> test = new LinkedDoubleStack<String>();
+		LinkedList<String> test = new LinkedList<String>();
 		
 		for(int i = 20; i >= 0; i--) {
-			test.push(i + "");
+			test.insert(i + "");
 		}
 		test.remove(21);
 //		System.out.println(test.size());

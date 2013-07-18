@@ -23,7 +23,7 @@ public class LinkedList<T> {
 	}
 	
 	//adds to front
-	public void add(T data) {
+	public void insert(T data) {
 		Node<T> newNode = new Node<T>(data);
 		this.size++;
 		if(this.isEmpty()) {
@@ -32,21 +32,21 @@ public class LinkedList<T> {
 			return;
 		}
 		newNode.setFrontPointer(this.head);
-		if(this.head == this.tail) {
-			this.tail = this.head;
-		}
+//		if(this.head == this.tail) {
+//			this.tail = this.head;
+//		}
 		this.head = newNode;
 	}
 	
 	//adds to front
-	public void addFirst(T data) {
-		this.add(data);
+	public void insertFirst(T data) {
+		this.insert(data);
 	}
 	
 	//adds to back
-	public void addLast(T data) {
+	public void insertLast(T data) {
 		if(this.isEmpty()) {
-			this.add(data);
+			this.insert(data);
 			return;
 		}
 		this.size++;
@@ -56,22 +56,23 @@ public class LinkedList<T> {
 	}
 	
 	//adds to location
-	public void add(T data, int location) {
+	public void insert(T data, int location) {
 		if(location > this.size || location < 0) {
 			throw new IndexOutOfBoundsException();
 		}
 		if(location == 0) {
-			this.add(data);
+			this.insert(data);
 			return;
 		}
 		if(location == this.size) {
-			this.addLast(data);
+			this.insertLast(data);
 			return;
 		}
 		Node<T> newNode = new Node<T>(data);
 		this.moveCurrentForwards(location - 1);
 		newNode.setFrontPointer(this.current.getFrontPointer());
 		this.current.setFrontPointer(newNode);
+		this.size++;
 	}
 	
 	//removes from front

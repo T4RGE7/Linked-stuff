@@ -5,27 +5,75 @@
  */
 public class LinkedDoubleList<T> {
 
-	protected DoubleNode<T> head, tail;
+	protected DoubleNode<T> head, tail, current;
+	private int size;
 	
 	public LinkedDoubleList() {
 		this.head = null;
 		this.tail = null;
+		this.current = null;
+		this.size = 0;
 	}
 	
 	public LinkedDoubleList(T data) {
 		this.head = new DoubleNode<T>(data);
+		this.tail = this.head;
+		this.current = null;
+		this.size = 1;
 	}
 	
 	//adds to front
-	public void add(T data) {
+	public void insert(T data) {
 		DoubleNode<T> newNode = new DoubleNode<T>(data);
+		this.size++;
 		if(this.isEmpty()) {
 			this.head = newNode;
+			this.tail = this.head;
 			return;
 		}
 		newNode.setFrontPointer(this.head);
 		this.head.setBackPointer(newNode);
 		this.head = newNode;
+	}
+	
+	//adds to front
+	public void insertFirst(T data) {
+		this.insert(data);
+	}
+	
+	//adds to end
+	public void insertLast(T data) {
+		if(this.isEmpty()) {
+			this.insert(data);
+			return;
+		}
+		this.size++;
+		DoubleNode<T> newNode = new DoubleNode<T>(data);
+		newNode.setBackPointer(this.tail);
+		this.tail.setFrontPointer(newNode);
+		this.tail = newNode;
+	}
+	
+	//adds to location
+	public void insert(T data, int location) {
+		if(location > this.size || location < 0) {
+			throw new IndexOutOfBoundsException();
+		}
+		if(location == 0) {
+			this.insert(data);
+			return;
+		}
+		if(location == this.size) {
+			this.insertLast(data);
+			return;
+		}
+		DoubleNode<T> newNode = new DoubleNode<T>(data);
+		this.moveCurrentClosest(location - 1);
+		newNode.setFrontPointer(this.current.getFrontPointer());
+		this.current.setFrontPointer(newNode);
+		newNode.setBackPointer(this.current);
+		((DoubleNode<T>)(newNode.getFrontPointer())).setBackPointer(newNode);
+		this.size++;
 	}
 	
 	//removes from front
@@ -34,8 +82,10 @@ public class LinkedDoubleList<T> {
 			throw new EmptyListException();
 		}
 		T toReturn = this.head.getData();
+		this.size--;
 		if(this.head.getFrontPointer() == null) {
 			this.head = null;
+			this.tail = null;
 			return toReturn;
 		}
 		this.head = (DoubleNode<T>)this.head.getFrontPointer();
@@ -43,8 +93,90 @@ public class LinkedDoubleList<T> {
 		return toReturn;
 	}
 	
+	//removes from front
+	public T removeFirst() throws EmptyListException {
+		return this.remove();
+	}
+	
+	//removes from back
+	public T removeLast() throws EmptyListException {
+		if(this.size == 1) {
+			return this.remove();
+		}
+		T toReturn = this.tail.getData();
+		this.tail = this.tail.getBackPointer();
+		this.tail.setFrontPointer(null);
+		this.size--;
+		return toReturn;
+	}
+	
+	//removes from location
+	public T remove(int location) throws EmptyListException {
+		if(this.isEmpty()) {
+			throw new EmptyListException();
+		}
+		if(location >= this.size || location < 0) {
+			throw new IndexOutOfBoundsException();
+		}
+		if(location == 0) {
+			return this.remove();
+		}
+		if(location == this.size - 1) {
+			return this.removeLast();
+		}
+		this.moveCurrentClosest(location - 1);
+		T toReturn = this.current.getFrontPointer().getData();
+		this.current.setFrontPointer(this.current.getFrontPointer().getFrontPointer());
+		((DoubleNode<T>)(this.current.getFrontPointer())).setBackPointer(this.current);
+		this.size--;
+		return toReturn;
+	}
+	
+	//peeks first
+	public T peek() throws EmptyListException {
+		if(this.isEmpty()) {
+			throw new EmptyListException();
+		}
+		return this.head.getData();
+	}
+	
+	//peeks first
+	public T peekFirst() throws EmptyListException {
+		return this.peek();
+	}
+	
+	//peeks last
+	public T peekLast() throws EmptyListException {
+		if(this.isEmpty()) {
+			throw new EmptyListException();
+		}
+		if(this.size == 1) {
+			return this.peek();
+		}
+		return this.tail.getData();
+	}
+	
+	//peeks at location
+	public T peek(int location) throws EmptyListException {
+		if(this.isEmpty()) {
+			throw new EmptyListException();
+		}
+		if(location >= this.size || location < 0) {
+			throw new IndexOutOfBoundsException();
+		}
+		if(location == 0) {
+			return this.peek();
+		}
+		if(location == this.size - 1) {
+			return this.peekLast();
+		}
+		this.moveCurrentClosest(location);
+		return this.current.getData();
+	}
+	
 	public void clear() {
 		this.head = null;
+		this.tail = null;
 	}
 	
 	public boolean isEmpty() {
@@ -52,5 +184,28 @@ public class LinkedDoubleList<T> {
 			return true;
 		}
 		return false;
+	}
+	
+	public void moveCurrentClosest(int location) {
+		if(location > this.size || location < 0) {
+			throw new IndexOutOfBoundsException();
+		}
+		if(location < this.size/2) {
+			this.moveCurrentForwards(location);
+			return;
+		}
+		this.moveCurrentBackwards(location);
+	}
+	
+	public void moveCurrentForwards(int location) {
+		System.out.println("Forwards");
+		this.current = this.head;
+		for(int j = 0; j < location && current.getFrontPointer() != null; j++, this.current = (DoubleNode<T>) this.current.getFrontPointer());
+	}
+	
+	public void moveCurrentBackwards(int location) {
+		System.out.println("Backwards");
+		this.current = this.tail;
+		for(int j = this.size - 1; j > location && current.getBackPointer() != null; j--, this.current = this.current.getBackPointer());
 	}
 }
