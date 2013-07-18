@@ -9,13 +9,17 @@ public class TestDriver {
 	 * @param args
 	 */
 	public static void main(String[] args) throws EmptyListException{
-		LinkedDoubleCircleList<String> test = new LinkedDoubleCircleList<String>();
-		test.add("hello");
-		test.add("world");
-		test.add("two");
+		LinkedQueue<String> test = new LinkedQueue<String>();
+	
+		for(int i = 20; i > 0; i--) {
+			test.enque(i + "");
+		}
+		
+//		System.out.println(test.peek(18));
+		
 		
 		while(!test.isEmpty()) {
-			System.out.println((test.remove()));
+			System.out.println((test.poll()));
 		}
 
 	}

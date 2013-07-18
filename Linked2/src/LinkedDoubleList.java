@@ -5,10 +5,11 @@
  */
 public class LinkedDoubleList<T> {
 
-	protected DoubleNode<T> head;
+	protected DoubleNode<T> head, tail;
 	
 	public LinkedDoubleList() {
 		this.head = null;
+		this.tail = null;
 	}
 	
 	public LinkedDoubleList(T data) {
