@@ -4,6 +4,10 @@
  *
  * 
  */
-public class LinkedList {
+public class LinkedList<T> {
 
+	private LinkedNode<T> head;
+	
+	
+	
 }
